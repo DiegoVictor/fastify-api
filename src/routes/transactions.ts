@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { knex } from '../database';
@@ -19,4 +20,20 @@ export async function routes(app: FastifyInstance) {
     return { transaction };
   });
 
+  app.post('/', async (request, reply) => {
+    const validator = z.object({
+      title: z.string(),
+      amount: z.number(),
+      type: z.enum(['credit', 'debit']),
+    });
+    const { amount, title, type } = validator.parse(request.body);
+
+    await knex('transactions').insert({
+      id: randomUUID(),
+      amount: type === 'credit' ? amount : amount * -1,
+      title,
+    });
+
+    return reply.status(201).send();
+  });
 }
