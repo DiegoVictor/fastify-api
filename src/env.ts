@@ -1,11 +1,18 @@
-import 'dotenv/config';
+import { config, DotenvConfigOptions } from 'dotenv';
 import { z } from 'zod';
+
+const options: DotenvConfigOptions = {};
+if (process.env.NODE_ENV === 'test') {
+  options.path = '.env.test';
+}
+config(options);
 
 const schema = z.object({
   DATABASE_URL: z.string({
     required_error: 'Missing DATABASE_URL in environment variable',
   }),
-  PORT: z
+  DATABASE_CLIENT: z.enum(['sqlite', 'pg']),
+  PORT: z.coerce
     .number({
       invalid_type_error: 'PORT must be a number',
     })
