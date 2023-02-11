@@ -1,0 +1,23 @@
+name: Pipeline
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: development
+      DATABASE_URL: './db/fastify-api.sqlite'
+      DATABASE_CLIENT: sqlite
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '18.x'
+      - uses: actions/checkout@v2
+      - name: Run coverage
+        run: |
+          npm install
+          npm run test
+      - uses: codecov/codecov-action@v3
+        with:
+          directory: ./tests/coverage/
