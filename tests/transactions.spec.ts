@@ -129,4 +129,8 @@ describe('Transactions', () => {
       },
     });
   });
+
+  it('should not be able to get transactions without a sessionId', async () => {
+    await request(app.server).get('/transactions').expect(401);
+  });
 });
