@@ -1,2 +1,3 @@
 knex.d.ts
 dist
+vitest.config.ts
