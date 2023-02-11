@@ -10,3 +10,92 @@
 [![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Fastify%20API&uri=https%3A%2F%2Fraw.githubusercontent.com%2FDiegoVictor%2Ffastify-api%2Fmain%2FInsomnia_2023-02-10.json)
 
 Small and simple transactions API developed with [Fastify](https://www.fastify.io/).
+
+## Table of Contents
+* [Installing](#installing)
+  * [Configuring](#configuring)
+    * [Migrations](#migrations)
+    * [.env](#env)
+* [Usage](#usage)
+  * [Routes](#routes)
+    * [Requests](#requests)
+* [Running the tests](#running-the-tests)
+  * [Coverage report](#coverage-report)
+
+# Installing
+Easy peasy lemon squeezy:
+```
+$ yarn
+```
+Or:
+```
+$ npm install
+```
+> Was installed and configured the [`eslint`](https://eslint.org/) and [`prettier`](https://prettier.io/) to keep the code clean and patterned.
+
+## Configuring
+The application use just one database, you can choose between: [SQLite](https://www.sqlite.org/index.html) and [Postgres](https://www.postgresql.org/), look to [env](#env) to see how.
+
+### Migrations
+Remember to run the migrations:
+```
+$ yarn knex:migrate
+```
+Or:
+```
+$ npx knex migrate:latest
+```
+> See more information on [Knex Migrations](https://knexjs.org/guide/migrations.html).
+
+### .env
+In this file you may configure the environment, your app's port and a url to documentation (this will be returned with error responses, see [error section](#error-handling)). Rename the `.env.example` in the root directory to `.env` then just update with your settings.
+
+|key|description|default
+|---|---|---
+|NODE_ENV|App environment.|`development`
+|DATABASE_CLIENT|Postgres (`pg`) or SQLite (`sqlite`).|`sqlite`
+|DATABASE_URL|If `DATABASE_CLIENT` is `sqlite` this should be the path to the database file, but if `DATABASE_CLIENT` is `pg` it should be the URL to connect to the database.|`./db/fastify-api.sqlite`
+|PORT|Port number where the app will run (optional).|`3000`
+
+# Usage
+To start up the app run:
+```
+$ yarn dev:server
+```
+Or:
+```
+npm run dev:server
+```
+
+## Routes
+|route|HTTP Method|params|description
+|:---|:---:|:---:|:---:
+|`/transactions`|POST|Body with user transaction `type`, `title` and `amount`.|Create a new transaction (`credit` or `debit`).
+|`/transactions`|GET| - |Get all transactions.
+|`/transactions/:id`|GET|`id` of the transaction|Get one transaction.
+|`/transactions/summary`|GET| - |Return transactions summary.
+
+### Requests
+* `POST /connections`
+
+Request body:
+```json
+{
+  "type": "credit",
+  "title": "Deposit",
+  "amount": 1000
+}
+```
+
+# Running the tests
+[Vitest](https://vitest.dev) was the choice to test the app, to run:
+```
+$ yarn test
+```
+Or:
+```
+$ npm run test
+```
+
+## Coverage report
+You can see the coverage report inside `tests/coverage`. They are automatically created after the tests run.
