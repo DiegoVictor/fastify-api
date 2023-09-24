@@ -24,7 +24,7 @@ describe('Transactions', () => {
       .post('/transactions')
       .send({
         title: faker.lorem.words(3),
-        amount: faker.datatype.number({
+        amount: faker.number.int({
           min: 1,
           max: 100,
         }),
@@ -36,7 +36,7 @@ describe('Transactions', () => {
   it('should be able to list all transactions', async () => {
     const transaction = {
       title: faker.lorem.words(3),
-      amount: faker.datatype.number({
+      amount: faker.number.int({
         min: 1,
         max: 100,
       }),
@@ -65,7 +65,7 @@ describe('Transactions', () => {
   it('should be able to get one transaction by id', async () => {
     const transaction = {
       title: faker.lorem.words(3),
-      amount: faker.datatype.number({
+      amount: faker.number.int({
         min: 1,
         max: 100,
       }),
@@ -98,7 +98,7 @@ describe('Transactions', () => {
 
   it('should be able to get transactions summary', async () => {
     const [credit, debit] = Array.from({ length: 2 }, () =>
-      faker.datatype.number({ min: 1, max: 100 })
+      faker.number.int({ min: 1, max: 100 })
     );
     const creationResponse = await request(app.server)
       .post('/transactions')
