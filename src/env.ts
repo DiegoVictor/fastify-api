@@ -24,6 +24,7 @@ const schema = z.object({
       required_error: 'Missing NODE_ENV in environment variables',
     })
     .default('production'),
+  HOST: z.string().default('localhost'),
 });
 
 export const env = schema.parse(process.env);
