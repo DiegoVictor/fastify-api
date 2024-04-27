@@ -5,7 +5,13 @@ export default defineConfig({
     coverage: {
       reporter: ['text', 'json', 'html'],
       reportsDirectory: 'tests/coverage',
-      exclude: ['db/**/*', 'src/database.ts', 'src/env.ts'],
+      exclude: [
+        'db/**/*',
+        'src/database.ts',
+        'src/env.ts',
+        'src/server.ts',
+        'knexfile.ts',
+      ],
     },
   },
 });
