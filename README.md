@@ -16,8 +16,8 @@ Small and simple transactions API developed with [Fastify](https://www.fastify.i
 ## Table of Contents
 * [Installing](#installing)
   * [Configuring](#configuring)
-    * [Migrations](#migrations)
     * [.env](#env)
+    * [Migrations](#migrations)
 * [Usage](#usage)
   * [Routes](#routes)
     * [Requests](#requests)
@@ -38,6 +38,16 @@ $ npm install
 ## Configuring
 The application use just one database, you can choose between: [SQLite](https://www.sqlite.org/index.html) and [Postgres](https://www.postgresql.org/), look to [env](#env) to see how.
 
+### .env
+In this file you may configure the environment, your app's port and a url to documentation (this will be returned with error responses, see [error section](#error-handling)). Rename the `.env.example` in the root directory to `.env` then just update with your settings.
+
+|key|description|default
+|---|---|---
+|NODE_ENV|App environment.|`development`
+|DATABASE_CLIENT|Postgres (`pg`) or SQLite (`sqlite`).|`sqlite`
+|DATABASE_URL|If `DATABASE_CLIENT` is `sqlite` this should be the path to the database file, but if `DATABASE_CLIENT` is `pg` it should be the URL to connect to the database.|`./db/fastify-api.sqlite`
+|PORT|Port number where the app will run (optional).|`3000`
+
 ### Migrations
 Remember to run the migrations:
 ```
@@ -49,15 +59,6 @@ $ npx knex migrate:latest
 ```
 > See more information on [Knex Migrations](https://knexjs.org/guide/migrations.html).
 
-### .env
-In this file you may configure the environment, your app's port and a url to documentation (this will be returned with error responses, see [error section](#error-handling)). Rename the `.env.example` in the root directory to `.env` then just update with your settings.
-
-|key|description|default
-|---|---|---
-|NODE_ENV|App environment.|`development`
-|DATABASE_CLIENT|Postgres (`pg`) or SQLite (`sqlite`).|`sqlite`
-|DATABASE_URL|If `DATABASE_CLIENT` is `sqlite` this should be the path to the database file, but if `DATABASE_CLIENT` is `pg` it should be the URL to connect to the database.|`./db/fastify-api.sqlite`
-|PORT|Port number where the app will run (optional).|`3000`
 
 # Usage
 To start up the app run:
@@ -78,7 +79,7 @@ npm run dev:server
 |`/transactions/summary`|GET| - |Return transactions summary.
 
 ### Requests
-* `POST /connections`
+* `POST /transactions`
 
 Request body:
 ```json
