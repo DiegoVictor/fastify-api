@@ -47,7 +47,11 @@ export async function routes(app: FastifyInstance) {
       amount: z.number(),
       type: z.enum(['credit', 'debit']),
     });
-    const { amount, title, type } = validator.parse(request.body);
+    const { success, data, error } = validator.safeParse(request.body);
+
+    if (!success) {
+      return reply.status(400).send(error.issues);
+    }
 
     const sessionId = request.cookies.sessionId ?? randomUUID();
     reply.cookie('sessionId', sessionId, {
@@ -57,8 +61,8 @@ export async function routes(app: FastifyInstance) {
 
     await knex('transactions').insert({
       id: randomUUID(),
-      amount: type === 'credit' ? amount : amount * -1,
-      title,
+      amount: data.type === 'credit' ? data.amount : data.amount * -1,
+      title: data.title,
       session_id: sessionId,
     });
 
